@@ -1,12 +1,11 @@
 <template>
-  <v-app>
+  <v-app width="400" max-height="600">
     <v-app-bar app dense color="blue">
       <v-toolbar-title class="app-title">Tabitat</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
-
     <v-main>
-      <v-card width="400" max-height="600">
+      <v-card>
         <v-list nav dense>
           <v-list-item
             v-for="tab in tabs"
@@ -33,7 +32,6 @@
     </v-main>
   </v-app>
 </template>
-
 <script>
 export default {
   data() {
