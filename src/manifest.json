@@ -1,8 +1,8 @@
 {
   "name": "Tabitat",
   "description": "A habitat for tabs",
-  "version": "0.1.1",
-  "version_name": "0.1.1",
+  "version": "0.2.0",
+  "version_name": "0.2.0",
   "manifest_version": 2,
   "icons": {
     "32": "icons/Tabitat_32x32.png",
@@ -17,13 +17,9 @@
     "default_popup": "popup/popup.html"
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   },
-  "permissions": [
-    "tabs"
-  ],
+  "permissions": ["tabs"],
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
