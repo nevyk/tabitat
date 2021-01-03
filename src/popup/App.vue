@@ -95,6 +95,10 @@ export default {
   created() {
     // get all tabs and put them in data
     this.refreshTabData();
+    this.$vuetify.theme.dark =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? true
+        : false;
   },
   methods: {
     activateTab: function(windowId, tabIndex) {
