@@ -1,177 +1,196 @@
 <template>
-  <v-app>
-    <v-app-bar app dense color="blue">
-      <v-toolbar-title class="app-title">Tabitat</v-toolbar-title>
-    </v-app-bar>
-    <v-main>
-      <v-container>
-        <v-text-field
-          autofocus
-          dense
-          outlined
-          placeholder="Search"
+  <nav class="panel is-primary">
+    <p class="panel-heading">
+      Tabitat
+      <!-- <button class="button is-small" @click="showTabData">Tab Data</button> -->
+    </p>
+
+    <div class="panel-block">
+      <p class="control has-icons-left">
+        <input
+          ref="searchBox"
           v-model="searchString"
-        ></v-text-field>
-        <v-row justify="center" dense>
-          <v-col>
-            <v-card class="card" elevation="2" outlined>
-              <v-subheader>This Window</v-subheader>
-              <v-list dense nav>
-                <v-list-item-group>
-                  <v-list-item
-                    v-for="(tab, t) in currentWindowTabsFiltered"
-                    v-bind:key="t"
-                  >
-                    <v-list-item-avatar size="24" tile>
-                      <v-img v-bind:src="tab.favIconUrl"></v-img>
-                    </v-list-item-avatar>
+          class="input"
+          type="text"
+          placeholder="Search"
+        />
+        <span class="icon is-left">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+      </p>
+    </div>
+    <!-- <p class="panel-tabs">
+      <a class="is-active">All</a>
+      <a>This Window</a>
+      <a>Other Windows</a>
+    </p> -->
+    <div id="tabs">
+      <a v-for="tab in allTabsFiltered" :key="tab.id" class="panel-block is-active">
+        <div class="panel-icon" @click="activateTab(tab.windowId, tab.index)">
+          <figure class="image is-24x24">
+            <img :src="tab.favIconUrl" />
+          </figure>
+        </div>
+        <div class="pl-2" @click="activateTab(tab.windowId, tab.index)">
+          <div class="truncate-tab">
+            {{ tab.title }}
+          </div>
+          <div class="is-size-7 is-italic truncate-tab">
+            {{ tab.url }}
+          </div>
+        </div>
 
-                    <v-list-item-content
-                      v-on:click="activateTab(tab.windowId, tab.index)"
-                    >
-                      <v-list-item-title v-text="tab.title"></v-list-item-title>
-                      <v-list-item-subtitle v-html="tab.url"></v-list-item-subtitle>
-                    </v-list-item-content>
-
-                    <v-icon v-if="tab.active">mdi-eye-outline</v-icon>
-
-                    <v-list-item-action>
-                      <v-btn icon elevation="2" v-on:click="closeTab(tab.id)">
-                        <v-icon>mdi-trash-can-outline</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row justify="center" dense>
-          <v-col>
-            <v-card class="card" elevation="2" outlined>
-              <v-subheader>Other Windows</v-subheader>
-              <v-list dense nav>
-                <v-list-item-group>
-                  <v-list-item
-                    v-for="(tab, t) in otherWindowsTabsFiltered"
-                    v-bind:key="t"
-                  >
-                    <v-list-item-avatar size="24" tile>
-                      <v-img v-bind:src="tab.favIconUrl"></v-img>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content
-                      v-on:click="activateTab(tab.windowId, tab.index)"
-                    >
-                      <v-list-item-title v-text="tab.title"></v-list-item-title>
-                      <v-list-item-subtitle v-html="tab.url"></v-list-item-subtitle>
-                    </v-list-item-content>
-
-                    <v-list-item-action>
-                      <v-btn icon elevation="2" v-on:click="closeTab(tab.id)">
-                        <v-icon>mdi-trash-can-outline</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+        <div>
+          <button class="delete" @click="closeTab(tab.id)"></button>
+        </div>
+      </a>
+    </div>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p><strong>Total Tabs:</strong> {{ totalTabs }}</p>
+      </div>
+    </footer>
+  </nav>
 </template>
+
 <script>
+import * as browser from 'webextension-polyfill';
+
 export default {
   data() {
     return {
       currentWindowId: 0,
       currentWindowTabs: [],
       otherWindowsTabs: [],
-      searchString: ''
+      searchString: '',
     };
   },
   created() {
     // get all tabs and put them in data
     this.refreshTabData();
-    this.$vuetify.theme.dark =
-      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? true
-        : false;
   },
+
+  mounted() {
+    this.$refs.searchBox.focus();
+  },
+
   methods: {
-    activateTab: function(windowId, tabIndex) {
+    activateTab: function (windowId, tabIndex) {
       browser.tabs
         .highlight({
           windowId: windowId,
-          tabs: [tabIndex]
+          tabs: [tabIndex],
         })
         .then(() => {
           browser.windows.update(windowId, { focused: true });
         });
     },
-    closeTab: function(tabId, currentTabId) {
-      browser.tabs.remove(tabId).then(result => {
+
+    closeTab: function (tabId) {
+      browser.tabs.remove(tabId).then((result) => {
         this.refreshTabData();
       });
     },
-    refreshTabData: function() {
-      browser.tabs.query({ windowType: 'normal', currentWindow: true }).then(results => {
-        this.currentWindowTabs = results;
-      });
 
-      browser.tabs.query({ windowType: 'normal', currentWindow: false }).then(results => {
-        this.otherWindowsTabs = results;
-      });
-    }
+    refreshTabData: function () {
+      browser.tabs
+        .query({ windowType: 'normal', currentWindow: true })
+        .then((results) => {
+          this.currentWindowTabs = results;
+        });
+
+      browser.tabs
+        .query({ windowType: 'normal', currentWindow: false })
+        .then((results) => {
+          this.otherWindowsTabs = results;
+        });
+    },
+
+    showTabData: function () {
+      alert(JSON.stringify(this.currentWindowTabs));
+    },
   },
   computed: {
-    currentWindowTabsFiltered: function() {
+    currentWindowTabsFiltered: function () {
       if (this.searchString.length === 0) {
         return this.currentWindowTabs;
       } else {
-        let tabs = [];
-
-        this.currentWindowTabs.forEach(tab => {
-          let title = tab.title.toLowerCase();
+        return this.currentWindowTabs.filter((tab) => {
           let search = this.searchString.toLowerCase();
+          let titleFound = tab.title.toLowerCase().includes(search) ? true : false;
+          let urlFound = tab.url.toLowerCase().includes(search) ? true : false;
 
-          if (title.includes(search)) {
-            tabs.push(tab);
+          if (titleFound || urlFound) {
+            return true;
+          } else {
+            return false;
           }
         });
-
-        return tabs;
       }
     },
-    otherWindowsTabsFiltered: function() {
+
+    otherWindowsTabsFiltered: function () {
       if (this.searchString.length === 0) {
         return this.otherWindowsTabs;
       } else {
-        let tabs = [];
-
-        this.otherWindowsTabs.forEach(tab => {
-          let title = tab.title.toLowerCase();
+        return this.otherWindowsTabs.filter((tab) => {
           let search = this.searchString.toLowerCase();
+          let titleFound = tab.title.toLowerCase().includes(search) ? true : false;
+          let urlFound = tab.url.toLowerCase().includes(search) ? true : false;
 
-          if (title.includes(search)) {
-            tabs.push(tab);
+          if (titleFound || urlFound) {
+            return true;
+          } else {
+            return false;
           }
         });
-
-        return tabs;
       }
-    }
-  }
+    },
+
+    allTabsFiltered: function () {
+      let allTabs = this.currentWindowTabs.concat(this.otherWindowsTabs);
+
+      if (this.searchString.length === 0) {
+        return allTabs;
+      } else {
+        return allTabs.filter((tab) => {
+          let search = this.searchString.toLowerCase();
+          let titleFound = tab.title.toLowerCase().includes(search) ? true : false;
+          let urlFound = tab.url.toLowerCase().includes(search) ? true : false;
+
+          if (titleFound || urlFound) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+      }
+    },
+
+    totalTabs: function () {
+      return this.currentWindowTabs.length + this.otherWindowsTabs.length;
+    },
+  },
 };
 </script>
 
-<style scoped>
-.app-title {
-  color: white;
-}
-.card {
+<style lang="scss">
+@use '../assets/main.scss';
+
+#app {
   width: 400px;
+  height: 600px;
+}
+
+#tabs {
+  height: 454px;
+  overflow-y: auto;
+}
+
+.truncate-tab {
+  width: 325px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
