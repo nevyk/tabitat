@@ -2,11 +2,11 @@
   "name": "tabitat",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "build-watch": "vite build --watch"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "bulma": "^0.9.3",
     "vue": "^3.0.5",
     "webextension-polyfill": "^0.8.0"
