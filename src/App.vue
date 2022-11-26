@@ -7,12 +7,10 @@
         :total-tabs="tabs.tabList.length" />
     </div>
 
-    <div id="tabs-list">
-      <TabListItem
-        v-for="tab of searchResults"
-        :tab="tab"
-        :fav-icon-url="tab.favIconUrl" />
-    </div>
+    <TabListItem
+      v-for="tab of searchResults"
+      :tab="tab"
+      :fav-icon-url="tab.favIconUrl" />
   </div>
 </template>
 

@@ -1,9 +1,12 @@
 <template>
   <!-- container -->
-  <div class="border-b border-neutral-200 dark:border-neutral-700">
+  <div
+    class="border-b border-b-neutral-200 border-t border-t-transparent hover:bg-indigo-400/10 dark:border-neutral-700 dark:hover:bg-indigo-200/5">
     <div id="item-container" class="flex ml-2 mr-4 mt-2 mb-2">
       <!-- favicon block-->
-      <div id="favicon-container" class="flex-none self-center mr-2">
+      <div
+        id="favicon-container"
+        class="flex-none self-center place-items-stretch mr-2">
         <img id="favicon" class="h-10 w-10" :src="faviconSrc" alt="" />
       </div>
 
