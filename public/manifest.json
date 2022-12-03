@@ -22,5 +22,10 @@
         "default": "Ctrl+Shift+Period"
       }
     }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tabitat@pointedcap.dev"
+    }
   }
 }
