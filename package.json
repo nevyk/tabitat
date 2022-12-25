@@ -3,7 +3,8 @@
   "version": "2.0.3",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "pack": "pnpm run build && scripts/zip.sh"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.2.0",
