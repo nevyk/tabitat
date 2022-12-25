@@ -21,6 +21,11 @@
       "suggested_key": {
         "default": "Ctrl+Shift+Period"
       }
+    },
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Period"
+      }
     }
   },
   "browser_specific_settings": {
