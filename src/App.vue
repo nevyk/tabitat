@@ -9,6 +9,7 @@
 
     <TabListItem
       v-for="tab of searchResults"
+      :key="tab.index"
       :tab="tab"
       :fav-icon-url="tab.favIconUrl" />
   </div>
