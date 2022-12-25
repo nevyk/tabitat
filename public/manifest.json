@@ -17,14 +17,10 @@
   },
   "permissions": ["tabs"],
   "commands": {
-    "_execute_browser_action": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Period"
-      }
-    },
     "_execute_action": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Period"
+        "default": "Ctrl+Shift+Period",
+        "mac": "Command+Shift+Period"
       }
     }
   },
