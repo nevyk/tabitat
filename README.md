@@ -10,8 +10,8 @@ Tab icons created by strip - [Flaticon](https://www.flaticon.com/free-icons/tab)
 
 | Dependency | Version |
 | ---------- | ------- |
-| `NodeJS`   | 16+ |
-| `pnpm`     | 7+  |
+| `NodeJS`   | 16+     |
+| `pnpm`     | 7+      |
 
 ## Build Instructions
 
