@@ -11,6 +11,7 @@
     type="search"
     placeholder="Search"
     bind:value={$search}
+    autofocus
     class="mx-4 mb-4 p-1 border border-gray-300 rounded-lg text-base focus:outline-none focus:border-2 focus:border-indigo-400 focus:ring-indigo-200 dark:bg-neutral-800"
   />
 
