@@ -10,14 +10,14 @@ Tab icons created by strip - [Flaticon](https://www.flaticon.com/free-icons/tab)
 
 | Dependency | Version |
 | ---------- | ------- |
-| `NodeJS`   | 16.17.0 |
-| `pnpm`     | 7.17.1  |
+| `NodeJS`   | 16+ |
+| `pnpm`     | 7+  |
 
 ## Build Instructions
 
-Build output goes to dist folder.
+The output zip file will be in the `dist` folder.
 
 ```
 pnpm install
-pnpm run build
+pnpm run pack
 ```
