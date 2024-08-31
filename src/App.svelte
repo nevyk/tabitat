@@ -1,26 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { searchResults, refresh } from './lib/tabs';
+	import { refresh, total } from './lib/tabs';
 	import Header from './lib/Header.svelte';
-	import TabListItem from './lib/TabListItem.svelte';
+	import TabList from './lib/TabList.svelte';
 
 	onMount(() => {
 		refresh();
 	});
 </script>
 
-<main class="container w-[475px] h-[600px]">
+<main class="container w-[25rem]">
 	<Header />
-
-	{#each $searchResults as tab (tab.id)}
-		<TabListItem
-			windowId={tab.windowId}
-			tabIndex={tab.index}
-			tabId={tab.id}
-			title={tab.title}
-			url={tab.url} />
-	{/each}
+	<div class="h-[30rem] overflow-y-auto">
+		<TabList />
+	</div>
 </main>
 
-<style>
-</style>
+<style></style>
